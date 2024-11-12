@@ -1,0 +1,26 @@
+const int PIR_SENSOR_OUTPUT_PIN = 4;
+int warm_up = 0;
+
+void setup() {
+  pinMode(PIR_SENSOR_OUTPUT_PIN, INPUT);
+  Serial.begin(9600);
+  delay(20000);  // Wait for the sensor to warm up
+}
+
+void loop() {
+  int sensor_output = digitalRead(PIR_SENSOR_OUTPUT_PIN);
+
+  if (sensor_output == LOW) {
+    if (warm_up == 1) {
+      Serial.println("Warming Up\n");
+      warm_up = 0;
+      delay(20000);  // Additional warm-up time
+    }
+    Serial.println("No object detected\n");
+    delay(1000);
+  } else {
+    Serial.println("Object Detected\n");
+    warm_up = 1;
+    delay(1000);
+  }
+}
